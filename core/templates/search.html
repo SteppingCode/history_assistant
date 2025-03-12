@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="text-center mb-5">
+        <h2 class="text-primary">Поиск по базе данных</h2>
+        <p class="lead text-muted">Исследуйте ключевые события Великой Отечественной войны и историю ПАО "Татнефть" с помощью простого поиска.</p>
+    </div>
+    <form method="get" action="{% url 'search' %}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" value="{{ query }}" placeholder="Введите запрос" class="form-control">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Поиск</button>
+            </div>
+        </div>
+    </form>
+
+    {% if query %}
+        <h3 class="text-primary">Результаты поиска для "{{ query }}"</h3>
+        <h4>События Великой Отечественной войны</h4>
+        <ul class="list-group mb-4">
+            {% for event in ww2_results %}
+                <li class="list-group-item border-0">{{ event.date }} - {{ event.description }}</li>
+            {% empty %}
+                <li class="list-group-item border-0">Ничего не найдено</li>
+            {% endfor %}
+        </ul>
+        <h4>История ПАО "Татнефть"</h4>
+        <ul class="list-group">
+            {% for event in tatneft_results %}
+                <li class="list-group-item border-0">{{ event.date }} - {{ event.event }}: {{ event.description }}</li>
+            {% empty %}
+                <li class="list-group-item border-0">Ничего не найдено</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
